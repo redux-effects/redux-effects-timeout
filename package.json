@@ -1,5 +1,5 @@
 {
-  "name": "@redux-effects/redux-effects-timeout",
+  "name": "redux-effects-timeout",
   "description": "redux-effects middleware for managing timeouts/intervals/requestAnimationFrames",
   "repository": "git://github.com/redux-effects/redux-effects-timeout.git",
   "version": "0.1.0",
