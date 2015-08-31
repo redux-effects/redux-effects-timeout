@@ -7,7 +7,11 @@ redux-effects middleware for managing timeouts/intervals/requestAnimationFrames
 
 ## Installation
 
-    $ npm install @redux-effects/redux-effects-timeout
+    $ npm install redux-effects-timeout
+
+## Usage
+
+Refer to [declarative-timeout](https://github.com/redux-effects/declarative-timeout) for usage instructions.
 
 ## License
 

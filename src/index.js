@@ -16,15 +16,15 @@ function timeoutMiddleware (api={}) {
       : next(effect)
 }
 
-function handler ({interval=setInterval, timeout=setTimeout, raf=requestAnimationFrame, cancelInterval=clearInterval, cancelTimeout=clearTimeout, cancelRaf=cancelAnimationFrame}) {
+function handler ({interval=world().setInterval, timeout=world().setTimeout, raf=world().requestAnimationFrame, cancelInterval=clearInterval, cancelTimeout=world().clearTimeout, cancelRaf=world().cancelAnimationFrame}) {
   return function (effect) {
     switch (effect.type) {
       case 'TIMEOUT':
-        return setTimeout(effect.cb, effect.value)
+        return timeout(effect.cb, effect.value)
       case 'RAF':
-        return requestAnimationFrame(effect.cb)
+        return raf(effect.cb)
       case 'INTERVAL':
-        return setInterval(effect.cb, effect.value)
+        return interval(effect.cb, effect.value)
       case 'CLEAR_TIMEOUT':
         return cancelTimeout(effect.value)
       case 'CLEAR_INTERVAL':
@@ -33,6 +33,12 @@ function handler ({interval=setInterval, timeout=setTimeout, raf=requestAnimatio
         return cancelRaf(effect.value)
     }
   }
+}
+
+function world () {
+  return typeof window === 'undefined'
+    ? global
+    : window
 }
 
 /**
