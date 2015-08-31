@@ -1,0 +1,23 @@
+{
+  "name": "@redux-effects/redux-effects-timeout",
+  "description": "redux-effects middleware for managing timeouts/intervals/requestAnimationFrames",
+  "repository": "git://github.com/redux-effects/redux-effects-timeout.git",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "scripts": {
+    "prepublish": "rm -rf lib && babel src --out-dir lib",
+    "postpublish": "rm -rf lib"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "babel-tape-runner": "^1.2.0",
+    "standard": "^5.1.0",
+    "tape": "^4.2.0"
+  },
+  "engines": {
+    "node": "~0.10.38",
+    "npm": "~2.9.0"
+  }
+}
