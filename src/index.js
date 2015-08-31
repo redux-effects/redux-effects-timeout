@@ -12,19 +12,22 @@ function timeoutMiddleware (api={}) {
   const handle = handler(api)
   return ({dispatch, getState}) => next => effect =>
     types.indexOf(effect.type) !== -1
-      ? handle(effect)
+      ? handle(dispatch, effect)
       : next(effect)
 }
 
 function handler ({interval=world().setInterval, timeout=world().setTimeout, raf=world().requestAnimationFrame, cancelInterval=clearInterval, cancelTimeout=world().clearTimeout, cancelRaf=world().cancelAnimationFrame}) {
-  return function (effect) {
+
+  return function (dispatch, effect) {
+    const fn = compose(dispatch, effect.cb)
+
     switch (effect.type) {
       case 'TIMEOUT':
-        return timeout(effect.cb, effect.value)
+        return timeout(fn, effect.value)
       case 'RAF':
-        return raf(effect.cb)
+        return raf(fn)
       case 'INTERVAL':
-        return interval(effect.cb, effect.value)
+        return interval(fn, effect.value)
       case 'CLEAR_TIMEOUT':
         return cancelTimeout(effect.value)
       case 'CLEAR_INTERVAL':
@@ -39,6 +42,10 @@ function world () {
   return typeof window === 'undefined'
     ? global
     : window
+}
+
+function compose (...fns) {
+  return fns.reduce((memo, fn) => arg => memo(fn(arg)), arg => arg)
 }
 
 /**
