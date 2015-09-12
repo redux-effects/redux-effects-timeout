@@ -12,7 +12,7 @@ function timeoutMiddleware (api={}) {
   const handle = handler(api)
   return ({dispatch, getState}) => next => effect =>
     types.indexOf(effect.type) !== -1
-      ? handle(dispatch, effect)
+      ? Promise.resolve(handle(dispatch, effect))
       : next(effect)
 }
 
