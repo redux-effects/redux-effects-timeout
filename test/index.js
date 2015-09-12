@@ -10,7 +10,7 @@ import timeout from '../src'
  */
 
 test('should work', ({pass, plan}) => {
-  run({type: 'TIMEOUT', value: 20, cb: () => pass()})
+  run({type: 'TIMEOUT', payload: {value: 20, cb: () => pass()}})
   plan(1)
 })
 

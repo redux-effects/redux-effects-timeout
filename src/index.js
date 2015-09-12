@@ -10,30 +10,30 @@ const types = ['TIMEOUT', 'INTERVAL', 'RAF', 'CLEAR_TIMEOUT', 'CLEAR_INTERVAL', 
 
 function timeoutMiddleware (api={}) {
   const handle = handler(api)
-  return ({dispatch, getState}) => next => effect =>
-    types.indexOf(effect.type) !== -1
-      ? Promise.resolve(handle(dispatch, effect))
-      : next(effect)
+  return ({dispatch, getState}) => next => action =>
+    types.indexOf(action.type) !== -1
+      ? Promise.resolve(handle(dispatch, action))
+      : next(action)
 }
 
 function handler ({interval=world().setInterval, timeout=world().setTimeout, raf=world().requestAnimationFrame, cancelInterval=clearInterval, cancelTimeout=world().clearTimeout, cancelRaf=world().cancelAnimationFrame}) {
 
-  return function (dispatch, effect) {
-    const fn = compose(dispatch, effect.cb)
+  return function (dispatch, action) {
+    const fn = compose(dispatch, action.payload.cb)
 
-    switch (effect.type) {
+    switch (action.type) {
       case 'TIMEOUT':
-        return timeout(fn, effect.value)
+        return timeout(fn, action.payload.value)
       case 'RAF':
         return raf(fn)
       case 'INTERVAL':
-        return interval(fn, effect.value)
+        return interval(fn, action.payload.value)
       case 'CLEAR_TIMEOUT':
-        return cancelTimeout(effect.value)
+        return cancelTimeout(action.payload.value)
       case 'CLEAR_INTERVAL':
-        return cancelInterval(effect.value)
+        return cancelInterval(action.payload.value)
       case 'CLEAR_RAF':
-        return cancelRaf(effect.value)
+        return cancelRaf(action.payload.value)
     }
   }
 }
