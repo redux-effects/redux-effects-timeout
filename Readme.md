@@ -35,7 +35,7 @@ Each of the first three methods returns an `id` (which may then be passed to eac
 ```javascript
 import {interval, cancelInterval} from 'redux-effects-timeout'
 import {createAction} from 'redux-actions'
-import bind from 'bind-effect'
+import {bind} from 'redux-effects'
 
 function startCounting () {
   return bind(interval(incrementCounter, 1000), id => intervalCreated)
