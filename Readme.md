@@ -3,7 +3,7 @@
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
-redux-effects middleware for managing timeouts/intervals/requestAnimationFrames
+Driver and set of action creators for timing related effects in [redux-effects](https://github.com/redux-effects/redux-effects).
 
 ## Installation
 
@@ -11,7 +11,52 @@ redux-effects middleware for managing timeouts/intervals/requestAnimationFrames
 
 ## Usage
 
-Refer to [declarative-timeout](https://github.com/redux-effects/declarative-timeout) for usage instructions.
+### Middleware
+
+To install the middleware, just do this:
+
+```javascript
+import timeout from 'redux-effects-timeout'
+
+applyMiddleware(timeout)(createStore)
+```
+
+### Action creators
+
+  * `raf(cb)` - execute `cb` on the next animation frame
+  * `timeout(cb, ms)` - execute `cb` in `ms` milliseconds
+  * `interval(cb, ms)` - execute `cb` every `ms` milliseconds
+  * `cancelTimeout(id)` - cancel the timeout specified by `id`
+  * `cancelInterval(id)` - cancel the interval specified by `id`
+  * `cancelAnimationFrame(id)` - cancel the animation frame callback specified by `id`
+
+Each of the first three methods returns an `id` (which may then be passed to each of the latter three, respectively) to any handlers in `.meta.steps`.
+
+```javascript
+import {interval, cancelInterval} from 'redux-effects-timeout'
+import {createAction} from 'redux-actions'
+import bind from 'bind-effect'
+
+function startCounting () {
+  return bind(interval(incrementCounter, 1000), id => intervalCreated)
+}
+
+function stopCounting (id) {
+  return cancelInterval(id)
+}
+
+const intervalCreated = createAction('INTERVAL_CREATED')
+
+// ... in your state reducer:
+
+function reduce (state, action) {
+  if (action.type === 'INTERVAL_CREATED') {
+    state = {...state, intervalId: action.payload}
+  }
+
+  return state
+}
+```
 
 ## License
 
