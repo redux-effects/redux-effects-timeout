@@ -18,7 +18,7 @@ To install the middleware, just do this:
 ```javascript
 import timeout from 'redux-effects-timeout'
 
-applyMiddleware(timeout)(createStore)
+applyMiddleware(timeout())(createStore)
 ```
 
 ### Action creators
